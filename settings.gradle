@@ -1,0 +1,1 @@
+include ':app', ':srouter', ':srouter_annotation', ':srouter_compiler', ':modelTest'

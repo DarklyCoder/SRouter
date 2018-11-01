@@ -1,0 +1,28 @@
+apply plugin: 'java-library'
+apply plugin: 'com.novoda.bintray-release'
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.8.1'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+}
+
+sourceCompatibility = "7"
+targetCompatibility = "7"
+
+publish {
+    userOrg = 'darklycoder'
+    groupId = 'com.darklycoder.lib'
+    artifactId = 'SRouter_Annotaion'
+    publishVersion = '0.0.1'
+    desc = 'SRouter_Annotaion'
+    website = 'https://github.com/DarklyCoder/SRouter_Annotaion.git'
+}
+
