@@ -2,8 +2,8 @@ package com.darklycoder.srouter.compiler;
 
 import com.darklycoder.srouter.annotation.Pack;
 import com.darklycoder.srouter.annotation.Route;
-import com.darklycoder.srouter.annotation.info.RouterMetaInfo;
-import com.darklycoder.srouter.annotation.info.RouterTable;
+import com.darklycoder.srouter.info.IRouterTable;
+import com.darklycoder.srouter.info.RouterMetaInfo;
 import com.google.auto.service.AutoService;
 import com.squareup.javapoet.*;
 
@@ -63,6 +63,7 @@ public class RouteProcessor extends AbstractProcessor {
         Pack pack = packElement.getAnnotation(Pack.class);
         String pkgName = pack.value();
         String tableName = pack.table();
+        String assetsPath = pack.assetsPath();
 
         ParameterizedTypeName mapTypeName = ParameterizedTypeName.get(
                 ClassName.get(HashMap.class),
@@ -107,35 +108,35 @@ public class RouteProcessor extends AbstractProcessor {
 
         String tableNameTmp = tableName.trim().isEmpty() ? "RouteTable" : tableName;
 
-        MethodSpec.Builder constructMethodHandle = MethodSpec.methodBuilder(tableNameTmp)
-                .addModifiers(Modifier.PRIVATE);
-
-        FieldSpec fieldSpec = FieldSpec.builder(TypeVariableName.get(tableNameTmp),
-                "_instance",
-                Modifier.PRIVATE, Modifier.STATIC)
-                .initializer("new $T()", TypeVariableName.get(tableNameTmp)).build();
-
-        TypeSpec subType = TypeSpec.classBuilder("SingletonInner")
-                .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
-                .addField(fieldSpec)
-                .build();
-
-        MethodSpec.Builder getInstance = MethodSpec.methodBuilder("getInstance")
-                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .addStatement("return SingletonInner._instance")
-                .returns(TypeVariableName.get(tableNameTmp));
+//        MethodSpec.Builder constructMethodHandle = MethodSpec.methodBuilder(tableNameTmp)
+//                .addModifiers(Modifier.PRIVATE);
+//
+//        FieldSpec fieldSpec = FieldSpec.builder(TypeVariableName.get(tableNameTmp),
+//                "_instance",
+//                Modifier.PRIVATE, Modifier.STATIC)
+//                .initializer("new $T()", TypeVariableName.get(tableNameTmp)).build();
+//
+//        TypeSpec subType = TypeSpec.classBuilder("SingletonInner")
+//                .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+//                .addField(fieldSpec)
+//                .build();
+//
+//        MethodSpec.Builder getInstance = MethodSpec.methodBuilder("getInstance")
+//                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+//                .addStatement("return SingletonInner._instance")
+//                .returns(TypeVariableName.get(tableNameTmp));
 
         TypeSpec type = TypeSpec.classBuilder(tableNameTmp)
                 .addModifiers(Modifier.PUBLIC)
-                .addMethod(constructMethodHandle.build())
-                .addSuperinterface(TypeName.get(RouterTable.class))
-                .addType(subType)
-                .addMethod(getInstance.build())
+//                .addMethod(constructMethodHandle.build())
+                .addSuperinterface(TypeName.get(IRouterTable.class))
+//                .addType(subType)
+//                .addMethod(getInstance.build())
                 .addMethod(methodHandle.build())
                 .build();
 
         try {
-            createJson(tableName, pathRecorder);
+            createJson(tableName, assetsPath, pathRecorder);
 
         } catch (IOException e) {
             printMessage(e.getMessage());
@@ -160,7 +161,7 @@ public class RouteProcessor extends AbstractProcessor {
      * @param tableName 文件ming
      * @param map       内容
      */
-    private void createJson(String tableName, Map<String, RouterMetaInfo> map) throws IOException {
+    private void createJson(String tableName, String assetsPath, Map<String, RouterMetaInfo> map) throws IOException {
         Set<String> set = map.keySet();
         int size = set.size() - 1;
         int i = 0;
@@ -193,7 +194,7 @@ public class RouteProcessor extends AbstractProcessor {
 
         sb.append("]");
 
-        String path = new File("").getCanonicalPath() + "/app/src/main/assets/srouter/" + tableName + ".json";
+        String path = new File("").getCanonicalPath() + assetsPath + tableName + ".json";
 
         File file = new File(path);
         boolean isDelete = !file.exists() || file.delete();

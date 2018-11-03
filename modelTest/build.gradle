@@ -28,6 +28,9 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    implementation project(":srouter")
-    kapt project(":srouter_compiler")
+//    implementation project(":srouter")
+//    kapt project(":srouter_compiler")
+
+    implementation 'com.darklycoder.lib:SRouter:0.0.2'
+    kapt 'com.darklycoder.lib:SRouter_Compiler:0.0.2'
 }

@@ -1,4 +1,4 @@
-package com.darklycoder.srouter.annotation.info;
+package com.darklycoder.srouter.info;
 
 import java.util.HashMap;
 
@@ -7,7 +7,7 @@ import java.util.HashMap;
  *
  * @author DarklyCoder 2018/11/1
  */
-public interface RouterTable {
+public interface IRouterTable {
 
     HashMap<String, RouterMetaInfo> getRouterTable();
 }

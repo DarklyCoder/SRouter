@@ -2,15 +2,6 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'com.novoda.bintray-release'
 
-buildscript {
-    repositories {
-        jcenter()
-    }
-    dependencies {
-        classpath 'com.novoda:bintray-release:0.8.1'
-    }
-}
-
 android {
     compileSdkVersion 28
 
@@ -40,14 +31,15 @@ dependencies {
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    api project(":srouter_annotation")
+    api 'com.darklycoder.lib:SRouter_Annotaion:0.0.2'
+//    api project(":srouter_annotation")
 }
 
 publish {
     userOrg = 'darklycoder'
     groupId = 'com.darklycoder.lib'
     artifactId = 'SRouter'
-    publishVersion = '0.0.1'
+    publishVersion = '0.0.2'
     desc = 'SRouter'
     website = 'https://github.com/DarklyCoder/SRouter.git'
 }

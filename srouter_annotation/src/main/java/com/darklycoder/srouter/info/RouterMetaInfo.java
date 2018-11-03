@@ -1,4 +1,4 @@
-package com.darklycoder.srouter.annotation.info;
+package com.darklycoder.srouter.info;
 
 /**
  * 元数据
@@ -11,7 +11,7 @@ public class RouterMetaInfo {
 
     public String path;//执行路径
 
-    public int extra = -1;
+    public int extra = -1;//标志位
 
     public RouterMetaInfo() {
     }

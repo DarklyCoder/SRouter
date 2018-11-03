@@ -1,1 +1,1 @@
-include ':app', ':srouter', ':srouter_annotation', ':srouter_compiler', ':modelTest'
+include ':app', ':srouter', ':srouter_annotation', ':srouter_compiler', ':modelTest', ':srouter_gradle_plugin'

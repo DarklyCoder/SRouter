@@ -4,10 +4,9 @@ import android.app.Activity
 import android.app.Application
 import android.support.v4.app.Fragment
 import android.util.Log
-import com.darklycoder.srouter.annotation.info.RouterMetaInfo
 import com.darklycoder.srouter.data.ActionInfo
 import com.darklycoder.srouter.data.ActionType
-import com.darklycoder.srouter.listener.ActionCallback
+import com.darklycoder.srouter.info.RouterMetaInfo
 import org.json.JSONArray
 import java.io.InputStream
 import java.lang.ref.WeakReference
@@ -35,6 +34,10 @@ class SRouter private constructor() {
         val instance by lazy { Holder.INSTANCE }
     }
 
+    fun getSRouterConfig(): SRouterConfig {
+        return config
+    }
+
     /**
      * 初始化路由
      * @param map 自定义路由
@@ -48,18 +51,22 @@ class SRouter private constructor() {
         this.mContext = WeakReference(context)
         this.config = config
 
-
         this.map.clear()
         if (null != map) {
             this.map.putAll(map)
-        }
 
-        if (config.isOpenLog) {
-            Log.e(TAG, "路由映射：${this.map.size}")
+            if (config.isOpenLog) {
+                Log.e(TAG, "自定义路由映射：${this.map.size}")
+            }
         }
 
         if (config.isUseJson) {
             parseRouterMapFromAssets(context)
+
+        } else {
+            //添加自动路由映射
+            this.map.putAll(RouterTable.getInstance().routerTable)
+            Log.e(TAG, "自动路由映射：${this.map.size}")
         }
 
         this.isInit = true
@@ -137,10 +144,6 @@ class SRouter private constructor() {
             return
         }
 
-        if (null != action.callback) {
-            action.callback = innerCallback
-        }
-
         if (!action.isValid()) {
             action.callback?.onFail("参数无效")
             return
@@ -188,20 +191,6 @@ class SRouter private constructor() {
 
         //执行完毕，移除操作
         actionList.remove(action)
-    }
-
-    /**
-     * 内置回调
-     */
-    private val innerCallback = object : ActionCallback {
-
-        override fun onFail(err: String?, e: Throwable?) {
-
-        }
-
-        override fun onResult() {
-
-        }
     }
 
 }

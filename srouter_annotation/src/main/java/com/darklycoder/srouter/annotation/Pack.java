@@ -23,4 +23,10 @@ public @interface Pack {
      * 路由表名
      */
     String table();
+
+    /**
+     * 主assets路径
+     * <p>默认为"/app/src/main/assets/srouter/"</p>
+     */
+    String assetsPath() default "/app/src/main/assets/srouter/";
 }

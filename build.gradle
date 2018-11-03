@@ -7,11 +7,15 @@ buildscript {
     repositories {
         google()
         jcenter()
+//        maven { url uri('repo/') }
     }
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.1.3'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.novoda:bintray-release:0.8.1'
+        classpath 'com.darklycoder.lib:SRouter_AutoRegister:1.0.0'
+//        classpath 'com.darklycoder.lib:srouter_gradle_plugin:0.0.1'
     }
 }
 
@@ -27,9 +31,8 @@ task clean(type: Delete) {
 }
 
 tasks.getByPath(":srouter:releaseAndroidJavadocs").enabled = false
-//tasks.getByPath(":srouter_annotation:releaseJavadocs").enabled = false
-//tasks.getByPath(":srouter_compiler:releaseJavadocs").enabled = false
 
-tasks.getByPath(":srouter:bintrayUpload").enabled = false
-tasks.getByPath(":srouter_annotation:bintrayUpload").enabled = true
+tasks.getByPath(":srouter:bintrayUpload").enabled = true
+tasks.getByPath(":srouter_annotation:bintrayUpload").enabled = false
 tasks.getByPath(":srouter_compiler:bintrayUpload").enabled = false
+tasks.getByPath(":srouter_gradle_plugin:bintrayUpload").enabled = false
